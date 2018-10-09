@@ -1,31 +1,23 @@
 package com.silalahi.valentinus.app.config;
 
-import java.util.Collection;
-import java.util.List;
-
+import com.silalahi.valentinus.app.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+import java.util.List;
+
 public class LoginUser extends org.springframework.security.core.userdetails.User {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -287835417589260183L;
+	private User user;
 
-	private com.silalahi.valentinus.app.entity.User user;
-
-	public com.silalahi.valentinus.app.entity.User getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public LoginUser(String username, String password, boolean enabled, boolean accountNonExpired,
-			boolean credentialsNonExpired, boolean accountNonLocked,
-			Collection<? extends GrantedAuthority> authorities) {
-		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-		// TODO Auto-generated constructor stub
-	}
-
-	public LoginUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-		super(username, password, authorities);
-		// TODO Auto-generated constructor stub
+	public LoginUser(User user) {
+		super(user.getName(), user.getPassword(), determineRoles(user.getAdmin()));
+		this.user = user;
 	}
 
 	private static final List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList("ROLE_USER");
@@ -35,5 +27,4 @@ public class LoginUser extends org.springframework.security.core.userdetails.Use
 	private static List<GrantedAuthority> determineRoles(boolean isAdmin) {
 		return isAdmin ? ADMIN_ROLES : USER_ROLES;
 	}
-
 }
